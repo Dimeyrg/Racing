@@ -16,25 +16,28 @@ public class CarController : MonoBehaviour
     [SerializeField] private WheelCollider _colliderBR;
 
     [SerializeField] private float _force;
+    [SerializeField] private float _maxSpeed;
     [SerializeField] private float _maxAngle;
-    [SerializeField] private float _minAngle;
+    private float _motor;
+    private Rigidbody _rb;
 
-    [SerializeField] private TrailRenderer TrailrendererBL;
-    [SerializeField] private TrailRenderer TrailrendererBR;
-
-    //[SerializeField] private Transform trackedObjectBL;
-    //[SerializeField] private Transform trackedObjectBR;
+    private void Start()
+    {
+        _rb = GetComponent<Rigidbody>();
+        _rb.centerOfMass = new Vector3(0, -0.153f, 0.422f);
+    }
 
     private void FixedUpdate()
     {
-        //if (trackedObjectBL != null && trackedObjectBR != null)
-        //{
-        //    TrailrendererBR.AddPosition(trackedObjectBR.position);
-        //    TrailrendererBL.AddPosition(trackedObjectBL.position);
-        //}
+        _motor = Input.GetAxis("Vertical") * _force;
 
-        _colliderBL.motorTorque = Input.GetAxis("Vertical") * _force;
-        _colliderBR.motorTorque = Input.GetAxis("Vertical") * _force;
+        if (_rb.velocity.magnitude > _maxSpeed)
+        {
+            _motor = 0;
+        }
+
+        _colliderBL.motorTorque = _motor;
+        _colliderBR.motorTorque = _motor;
 
         if (Input.GetKey(KeyCode.Space))
         {
@@ -42,8 +45,8 @@ public class CarController : MonoBehaviour
             _colliderBR.brakeTorque = 800f;
             _colliderFL.brakeTorque = 800f;
             _colliderFR.brakeTorque = 800f;
-       
-        }   
+
+        }
         else
         {
             _colliderFL.brakeTorque = 0f;
@@ -60,17 +63,6 @@ public class CarController : MonoBehaviour
         RotateWheel(_colliderBL, _transformBL);
         RotateWheel(_colliderBR, _transformBR);
 
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            _colliderBL.steerAngle = -_minAngle * Input.GetAxis("Horizontal");
-            _colliderBR.steerAngle = -_minAngle * Input.GetAxis("Horizontal");
-        }
-        else
-        {
-            _colliderBL.steerAngle = 0f;
-            _colliderBR.steerAngle = 0f;
-        }
-
     }
 
     private void RotateWheel(WheelCollider collider, Transform transform)
@@ -84,4 +76,12 @@ public class CarController : MonoBehaviour
         transform.position = position;
     }
 
-}   
+    private void ResetZRotation()
+    {
+        Vector3 euler = transform.rotation.eulerAngles;
+        euler.z = 0f;
+        transform.rotation = Quaternion.Euler(euler);
+
+    }
+
+}
