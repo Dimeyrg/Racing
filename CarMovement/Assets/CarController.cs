@@ -1,8 +1,9 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarController : MonoBehaviour
+public class CarController : NetworkBehaviour
 {
 
     [SerializeField] private Transform _transformFL;
@@ -29,6 +30,9 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!isLocalPlayer)
+            return;
+
         _motor = Input.GetAxis("Vertical") * _force;
 
         if (_rb.velocity.magnitude > _maxSpeed)
