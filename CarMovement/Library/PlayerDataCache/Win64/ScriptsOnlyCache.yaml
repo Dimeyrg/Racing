@@ -1361,7 +1361,7 @@ ScriptsOnlyBuild:
     className: ChatNetworkManager
   - hash:
       serializedVersion: 2
-      Hash: 9ce2e4d031f073de361b23b128faf006
+      Hash: 5085c149ae898c11398927898b806b9c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CameraController
