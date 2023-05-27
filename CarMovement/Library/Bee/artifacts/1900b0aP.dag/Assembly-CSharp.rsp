@@ -320,8 +320,9 @@
 -r:"Library/Bee/artifacts/1900b0aP.dag/Unity.VisualScripting.Flow.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aP.dag/Unity.VisualScripting.State.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aP.dag/UnityEngine.UI.ref.dll"
-"Assets/CameraController.cs"
-"Assets/CarController.cs"
+"Assets/Scripts/CameraController.cs"
+"Assets/Scripts/CarController.cs"
+"Assets/Scripts/NetworkCameraController.cs"
 -langversion:9.0
 
 /deterministic

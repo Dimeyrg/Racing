@@ -1,6 +1,4 @@
 using Mirror;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CarController : NetworkBehaviour
@@ -19,8 +17,15 @@ public class CarController : NetworkBehaviour
     [SerializeField] private float _force;
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _maxAngle;
-    private float _motor;
+    private float _moveX;
+    private float _moveZ;
     private Rigidbody _rb;
+
+    public override void OnStartLocalPlayer()
+    {
+        Camera.main.transform.SetParent(transform);
+        Camera.main.transform.localPosition = new Vector3(0f, 2f, -6f);
+    }
 
     private void Start()
     {
@@ -28,20 +33,21 @@ public class CarController : NetworkBehaviour
         _rb.centerOfMass = new Vector3(0, -0.153f, 0.422f);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (!isLocalPlayer)
             return;
 
-        _motor = Input.GetAxis("Vertical") * _force;
+        _moveX = Input.GetAxis("Vertical") * _force;
+
 
         if (_rb.velocity.magnitude > _maxSpeed)
         {
-            _motor = 0;
+            _moveX = 0;
         }
 
-        _colliderBL.motorTorque = _motor;
-        _colliderBR.motorTorque = _motor;
+        _colliderBL.motorTorque = _moveX;
+        _colliderBR.motorTorque = _moveX;
 
         if (Input.GetKey(KeyCode.Space))
         {
@@ -59,14 +65,17 @@ public class CarController : NetworkBehaviour
             _colliderBR.brakeTorque = 0f;
         }
 
-        _colliderFL.steerAngle = _maxAngle * Input.GetAxis("Horizontal");
-        _colliderFR.steerAngle = _maxAngle * Input.GetAxis("Horizontal");
+        _moveZ = _maxAngle * Input.GetAxis("Horizontal");
+        _colliderFL.steerAngle = _moveZ;
+        _colliderFR.steerAngle = _moveZ;
 
         RotateWheel(_colliderFL, _transformFL);
         RotateWheel(_colliderFR, _transformFR);
         RotateWheel(_colliderBL, _transformBL);
         RotateWheel(_colliderBR, _transformBR);
 
+        //transform.Rotate(0, _moveX, 0f);
+        //transform.Translate(0, 0f, _moveZ);
     }
 
     private void RotateWheel(WheelCollider collider, Transform transform)
@@ -79,13 +88,4 @@ public class CarController : NetworkBehaviour
         transform.rotation = rotation;
         transform.position = position;
     }
-
-    private void ResetZRotation()
-    {
-        Vector3 euler = transform.rotation.eulerAngles;
-        euler.z = 0f;
-        transform.rotation = Quaternion.Euler(euler);
-
-    }
-
 }

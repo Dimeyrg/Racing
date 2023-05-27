@@ -1,7 +1,6 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
-    - CameraController
     - CarController
     Mirror.Components.dll:
     - Mirror.NetworkTransformReliable
@@ -48,8 +47,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 65
       Script: {instanceID: 0}
-    - Class: 81
-      Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
     - Class: 104
@@ -70,8 +67,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 6072}
     - Class: 114
       Script: {instanceID: 7394}
-    - Class: 114
-      Script: {instanceID: 7762}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 146
@@ -1323,6 +1318,12 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.Examples.dll
     namespaceName: Mirror.Examples.NetworkRoom
     className: PlayerCamera
+  - hash:
+      serializedVersion: 2
+      Hash: 8e667d08c5b50dc8302cb0ca13547538
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NetworkCameraController
   - hash:
       serializedVersion: 2
       Hash: 9780bd9ffda4d63b9aed9c254b197574
